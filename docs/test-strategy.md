@@ -4,7 +4,7 @@
 
 Validate the deployed private Playwright Practice Lab at https://qa-forge-playwright-lab.darkonaumovski.chatgpt.site/. Cover authentication, the complete exposed user workflow, locator exercises, asynchronous behavior, navigation, audit browsing, challenges and solution content. This plan is based on the deployed version 2 UI and JavaScript inspected on 12 September 2026, not an assumed conventional SaaS backend.
 
-Publication to the owner's GitHub account requires all default tests to pass in all three browsers, type checking and plan coverage to pass, no skipped or expected-failing tests, and no unresolved application issues. A smoke pass alone does not satisfy this gate. Defect tests run normally and deliberately keep the gate red until the application is repaired. Never change assertions merely to accept a known defect.
+The regression gate requires all default tests to pass in all three browsers, type checking and plan coverage to pass, no skipped or expected-failing tests, and no unresolved application issues. A smoke pass alone does not satisfy this gate. Defect tests run normally and deliberately keep the gate red until the application is repaired. Never change assertions merely to accept a known defect. The owner subsequently authorized publishing this repository with the known failures; publication does not imply a green regression gate.
 
 ## Scope and explicit demo boundaries
 

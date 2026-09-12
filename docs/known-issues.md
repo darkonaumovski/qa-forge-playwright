@@ -57,4 +57,4 @@ Suggested guide correction: use `page.locator('#debounce-state')` and assert `to
 
 ## Publication decision
 
-The user's condition requires all tests to pass and no outstanding issues before GitHub publication. These unresolved issues block that action. A local repository and reports are delivered so the application can be corrected and the complete suite rerun. No GitHub repository has been created or pushed by this task.
+The initial publication condition required all tests to pass. After reviewing the results, the owner explicitly authorized pushing the repository with these documented issues unresolved. That authorization permits publication; the test gate remains red and no failures have been skipped or reclassified.

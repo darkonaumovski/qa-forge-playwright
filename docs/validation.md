@@ -37,7 +37,7 @@ See [known issues](known-issues.md) for reproductions, actual versus expected be
 
 ## Release decision
 
-**BLOCKED**. The user's publication condition requires a fully passing suite and no unresolved issues. The genuine application/guide failures prevent a GitHub push. The repository is delivered locally; no remote repository was created or pushed.
+**Test gate: BLOCKED. Publication: owner-authorized despite failures.** The original request required a fully passing suite before publication. The owner subsequently explicitly requested the GitHub push with the recorded failures still present. This changes the publication authorization, not the validation result or the unresolved issues.
 
 ## Reproduce
 

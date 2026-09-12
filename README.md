@@ -81,7 +81,7 @@ The workflow runs on pull requests, pushes to `main`, and manual dispatch. Confi
 
 CI installs the pinned dependency set and matching browsers, checks TypeScript and scenario coverage, runs all tests and generates Allure even when tests fail. Report upload is contingent on the artifact credential scan passing. Reports remain workflow artifacts for 14 days; nothing is published to GitHub Pages.
 
-The requested GitHub publication is conditional on a completely passing suite and no outstanding issues. Until that gate is satisfied, this repository stays local. Configure GitHub authentication locally when ready; do not paste an access token into source or a remote URL.
+The owner subsequently authorized GitHub publication with the documented failures still present. Publication does not change the regression gate: the default suite remains red until the application issues are fixed. Configure GitHub authentication locally when needed; do not paste an access token into source or a remote URL.
 
 ## References
 
