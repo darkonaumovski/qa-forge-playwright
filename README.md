@@ -2,7 +2,7 @@
 
 TypeScript end-to-end tests for the private [QA Forge practice lab](https://qa-forge-playwright-lab.darkonaumovski.chatgpt.site/), using page objects, isolated fixtures and Allure reporting.
 
-**106 scenarios across Chromium, Firefox and WebKit: 318 test executions.** The default suite includes regression tests for application defects; see [known issues](docs/known-issues.md) and the [validation record](docs/validation.md). A red suite blocks publication. Tests are never marked as expected failures to make the build green.
+**106 scenarios across Chromium, Firefox and WebKit: 318 test executions.** The default suite includes regression tests for application defects; see [known issues](docs/known-issues.md) and the [validation record](docs/validation.md). The owner authorized publication with these known failures; the regression gate remains red. Tests are never marked as expected failures to make the build green.
 
 ## Start locally
 
