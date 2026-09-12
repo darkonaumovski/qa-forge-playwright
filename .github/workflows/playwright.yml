@@ -1,0 +1,71 @@
+name: Playwright regression
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: playwright-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      BASE_URL: ${{ vars.BASE_URL || 'https://qa-forge-playwright-lab.darkonaumovski.chatgpt.site' }}
+      SITE_BYPASS_TOKEN: ${{ secrets.SITE_BYPASS_TOKEN }}
+      LAB_EMAIL: ${{ secrets.LAB_EMAIL || 'demo@qaforge.dev' }}
+      LAB_PASSWORD: ${{ secrets.LAB_PASSWORD || 'Playwright1!' }}
+      PW_WORKERS: '3'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Require owner-authorized site access
+        shell: bash
+        run: |
+          if [ -z "$SITE_BYPASS_TOKEN" ]; then
+            echo 'Configure the SITE_BYPASS_TOKEN repository secret before running the private-site suite.'
+            exit 1
+          fi
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run typecheck
+      - run: npm run coverage:check
+      - name: Run every scenario on all browsers
+        run: npm test
+      - name: Generate Allure report even on test failures
+        if: ${{ !cancelled() && hashFiles('allure-results/*-result.json') != '' }}
+        run: npm run allure:generate
+      - name: Summarize and enforce the complete test gate
+        if: ${{ !cancelled() && hashFiles('test-results/results.json') != '' }}
+        run: npm run results:gate
+      - name: Check artifacts for private token leakage
+        id: artifact_safety
+        if: ${{ !cancelled() && hashFiles('test-results/results.json') != '' }}
+        run: npm run security:scan
+      - name: Retain test reports and failure evidence
+        if: ${{ !cancelled() && steps.artifact_safety.outcome == 'success' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-forge-reports
+          path: |
+            allure-results/
+            allure-report/
+            playwright-report/
+            test-results/
+          retention-days: 14
+          if-no-files-found: warn

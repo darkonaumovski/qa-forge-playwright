@@ -1,0 +1,1228 @@
+[
+  {
+    "id": "QF-ACCESS-01",
+    "title": "Private hosting rejects requests without owner authentication",
+    "priority": "P2",
+    "preconditions": "Anonymous isolated API context",
+    "steps": [
+      "Request the live origin without cookies or the Sites header"
+    ],
+    "expected": "HTTP 401; response contains Sign in required",
+    "file": "tests/access.spec.ts"
+  },
+  {
+    "id": "QF-ACCESS-02",
+    "title": "Authorized browser can reach the deployed lab",
+    "priority": "P1",
+    "preconditions": "Fresh owner-authorized browser",
+    "steps": [
+      "Navigate to the live root URL"
+    ],
+    "expected": "HTTP 200; QA Forge title and demo login form visible",
+    "file": "tests/access.spec.ts"
+  },
+  {
+    "id": "QF-AUTH-01",
+    "title": "Login screen exposes accessible controls and demo credentials",
+    "priority": "P1",
+    "preconditions": "Login screen",
+    "steps": [
+      "Inspect heading, demo credentials, labels, password type and session checkbox"
+    ],
+    "expected": "Accessible email; masked password; remember unchecked; application hidden",
+    "file": "tests/auth.spec.ts"
+  },
+  {
+    "id": "QF-AUTH-02",
+    "title": "Empty login reports both required fields",
+    "priority": "P2",
+    "preconditions": "Login screen, both fields blank",
+    "steps": [
+      "Submit empty form"
+    ],
+    "expected": "Both exact required messages and aria-invalid=true; submit remains enabled",
+    "file": "tests/auth.spec.ts"
+  },
+  {
+    "id": "QF-AUTH-03",
+    "title": "Login validates an individually missing email",
+    "priority": "P2",
+    "preconditions": "Login screen",
+    "steps": [
+      "Fill only valid password",
+      "submit"
+    ],
+    "expected": "Email is required; no password error",
+    "file": "tests/auth.spec.ts"
+  },
+  {
+    "id": "QF-AUTH-04",
+    "title": "Login validates an individually missing password",
+    "priority": "P2",
+    "preconditions": "Login screen",
+    "steps": [
+      "Fill only valid email",
+      "submit"
+    ],
+    "expected": "Password is required; no email error",
+    "file": "tests/auth.spec.ts"
+  },
+  {
+    "id": "QF-AUTH-05",
+    "title": "Login rejects wrong password",
+    "priority": "P2",
+    "preconditions": "Login screen",
+    "steps": [
+      "Submit demo email with wrong-password"
+    ],
+    "expected": "Incorrect-credentials alert; application hidden; submit re-enabled",
+    "file": "tests/auth.spec.ts"
+  },
+  {
+    "id": "QF-AUTH-06",
+    "title": "Login rejects unknown account",
+    "priority": "P2",
+    "preconditions": "Login screen",
+    "steps": [
+      "Submit unknown@example.com with the demo password"
+    ],
+    "expected": "Incorrect-credentials alert; application hidden; submit re-enabled",
+    "file": "tests/auth.spec.ts"
+  },
+  {
+    "id": "QF-AUTH-07",
+    "title": "Login rejects malformed email",
+    "priority": "P2",
+    "preconditions": "Login screen",
+    "steps": [
+      "Submit invalid-email with the demo password"
+    ],
+    "expected": "Incorrect-credentials alert; application hidden; submit re-enabled",
+    "file": "tests/auth.spec.ts"
+  },
+  {
+    "id": "QF-AUTH-08",
+    "title": "Valid login shows a disabled pending state then Users",
+    "priority": "P1",
+    "preconditions": "Login screen",
+    "steps": [
+      "Submit the displayed valid credentials"
+    ],
+    "expected": "Checking access… and disabled submit precede User management and #users",
+    "file": "tests/auth.spec.ts"
+  },
+  {
+    "id": "QF-AUTH-09",
+    "title": "Correcting invalid credentials recovers login",
+    "priority": "P2",
+    "preconditions": "Login screen",
+    "steps": [
+      "Submit incorrect credentials",
+      "wait for alert",
+      "correct password and submit"
+    ],
+    "expected": "Successful sign-in; prior authentication alert hidden",
+    "file": "tests/auth.spec.ts"
+  },
+  {
+    "id": "QF-AUTH-10",
+    "title": "Password visibility toggles without changing its value",
+    "priority": "P2",
+    "preconditions": "Login screen",
+    "steps": [
+      "Fill Example-123!",
+      "click Show password",
+      "click Hide password"
+    ],
+    "expected": "Type changes password/text/password; value unchanged; button labels follow state",
+    "file": "tests/auth.spec.ts"
+  },
+  {
+    "id": "QF-AUTH-11",
+    "title": "Remember checkbox can be checked and unchecked",
+    "priority": "P2",
+    "preconditions": "Login screen",
+    "steps": [
+      "Check then uncheck Keep this lab session"
+    ],
+    "expected": "Checkbox states follow each action",
+    "file": "tests/auth.spec.ts"
+  },
+  {
+    "id": "QF-AUTH-12",
+    "title": "Enter submits the login form",
+    "priority": "P2",
+    "preconditions": "Login screen",
+    "steps": [
+      "Fill valid credentials",
+      "press Enter in password"
+    ],
+    "expected": "Users screen visible",
+    "file": "tests/auth.spec.ts"
+  },
+  {
+    "id": "QF-AUTH-13",
+    "title": "Sign out hides the application and allows a new login",
+    "priority": "P2",
+    "preconditions": "Successful demo sign-in",
+    "steps": [
+      "Sign out",
+      "inspect screen and hash",
+      "sign in again"
+    ],
+    "expected": "Application hidden, login visible, Signed out toast, no #users; re-login succeeds",
+    "file": "tests/auth.spec.ts"
+  },
+  {
+    "id": "QF-AUTH-14",
+    "title": "Hash navigation alone does not reveal the demo application",
+    "priority": "P2",
+    "preconditions": "Fresh context without demo sign-in",
+    "steps": [
+      "Navigate directly to /#users"
+    ],
+    "expected": "Login visible; Users hidden",
+    "file": "tests/auth.spec.ts"
+  },
+  {
+    "id": "QF-AUTH-15",
+    "title": "Credential copy failure offers an observable fallback",
+    "priority": "P2",
+    "preconditions": "Clipboard API deterministically rejects in a test stub",
+    "steps": [
+      "Click the email copy button"
+    ],
+    "expected": "Manual-copy fallback toast visible; no uncaught application error",
+    "file": "tests/auth.spec.ts"
+  },
+  {
+    "id": "QF-AUTH-16",
+    "title": "Credential copy sends the selected value to the clipboard API",
+    "priority": "P2",
+    "preconditions": "Clipboard write API replaced by an in-memory test spy",
+    "steps": [
+      "Click email then password copy controls"
+    ],
+    "expected": "Each exact selected value reaches writeText; two success notifications",
+    "file": "tests/auth.spec.ts"
+  },
+  {
+    "id": "QF-USERS-01",
+    "title": "Seed rows and metrics match the baseline",
+    "priority": "P1",
+    "preconditions": "Authenticated, six seed users",
+    "steps": [
+      "Inspect every row and all metrics"
+    ],
+    "expected": "All names/emails/roles/statuses/last-active values match seed; metrics 6/4/1/2",
+    "file": "tests/users.spec.ts"
+  },
+  {
+    "id": "QF-USERS-02",
+    "title": "Role filter shows only Admin accounts",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Select Admin role"
+    ],
+    "expected": "Only Ava and Liam visible; Showing 2 of 6 users; total metric remains 6",
+    "file": "tests/users.spec.ts"
+  },
+  {
+    "id": "QF-USERS-03",
+    "title": "Role filter shows only Manager accounts",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Select Manager role"
+    ],
+    "expected": "Only Noah and Sofia visible; Showing 2 of 6 users; total metric remains 6",
+    "file": "tests/users.spec.ts"
+  },
+  {
+    "id": "QF-USERS-04",
+    "title": "Role filter shows only Viewer accounts",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Select Viewer role"
+    ],
+    "expected": "Only Mila and Ethan visible; Showing 2 of 6 users; total metric remains 6",
+    "file": "tests/users.spec.ts"
+  },
+  {
+    "id": "QF-USERS-05",
+    "title": "All roles restores all users",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Select Admin",
+      "select All roles"
+    ],
+    "expected": "All six rows and full result summary restored",
+    "file": "tests/users.spec.ts"
+  },
+  {
+    "id": "QF-USERS-06",
+    "title": "Search matches full name",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Search Mila Petrova"
+    ],
+    "expected": "Only Mila; Showing 1 of 6 users",
+    "file": "tests/users.spec.ts"
+  },
+  {
+    "id": "QF-USERS-07",
+    "title": "Search matches partial name",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Search Rodri"
+    ],
+    "expected": "Only Ava; Showing 1 of 6 users",
+    "file": "tests/users.spec.ts"
+  },
+  {
+    "id": "QF-USERS-08",
+    "title": "Search matches email",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Search liam@qaforge.dev"
+    ],
+    "expected": "Only Liam; Showing 1 of 6 users",
+    "file": "tests/users.spec.ts"
+  },
+  {
+    "id": "QF-USERS-09",
+    "title": "Search matches case-insensitive text",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Search sOFIA"
+    ],
+    "expected": "Only Sofia; matching ignores case",
+    "file": "tests/users.spec.ts"
+  },
+  {
+    "id": "QF-USERS-10",
+    "title": "Search matches trimmed text",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Search Ethan with surrounding spaces"
+    ],
+    "expected": "Only Ethan; search trims outer whitespace",
+    "file": "tests/users.spec.ts"
+  },
+  {
+    "id": "QF-USERS-11",
+    "title": "Search and role filters intersect",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Select Manager",
+      "search Sofia",
+      "change role to Viewer"
+    ],
+    "expected": "Sofia first visible; then zero matching rows and empty state",
+    "file": "tests/users.spec.ts"
+  },
+  {
+    "id": "QF-USERS-12",
+    "title": "No matches has a zero summary and recovers on clear",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Search does-not-exist",
+      "clear search"
+    ],
+    "expected": "No users found; Showing 0 of 6; select-all unchecked; clear restores six rows",
+    "file": "tests/users.spec.ts"
+  },
+  {
+    "id": "QF-USERS-13",
+    "title": "Whitespace-only search is unfiltered",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Search three spaces"
+    ],
+    "expected": "All six rows remain",
+    "file": "tests/users.spec.ts"
+  },
+  {
+    "id": "QF-USERS-14",
+    "title": "Duplicate Edit actions are scoped to the target row",
+    "priority": "P1",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Count duplicate Edit buttons",
+      "scope Edit to Mila's row"
+    ],
+    "expected": "Six Edit controls; only Mila notification; row count and Pending status unchanged",
+    "file": "tests/users.spec.ts"
+  },
+  {
+    "id": "QF-USERS-15",
+    "title": "Delete menu is a scoped notification target",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Click Delete Noah Williams within Noah's row"
+    ],
+    "expected": "Delete-menu notification names Noah; six rows remain; no destructive deletion",
+    "file": "tests/users.spec.ts"
+  },
+  {
+    "id": "QF-USERS-16",
+    "title": "Semantic locators survive rerender and full reload",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Retain semantic Ava locator",
+      "filter Admin/all",
+      "reload and re-login"
+    ],
+    "expected": "Row is found after each render; generated ID shape observed but never used as an action selector",
+    "file": "tests/users.spec.ts"
+  },
+  {
+    "id": "QF-FORM-01",
+    "title": "New-user dialog has correct defaults and options",
+    "priority": "P2",
+    "preconditions": "Authenticated, Add user opened",
+    "steps": [
+      "Inspect initial focus, fields, roles, timezones and account checkboxes"
+    ],
+    "expected": "Close control initially focused; fields blank; role placeholder; Skopje timezone; welcome on; MFA off",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-02",
+    "title": "Empty submit reports three errors and focuses the first invalid field",
+    "priority": "P1",
+    "preconditions": "Authenticated, blank Add user dialog",
+    "steps": [
+      "Submit empty form"
+    ],
+    "expected": "Exact name/email/role errors; all three aria-invalid=true; name focused; dialog open; six users remain",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-03",
+    "title": "Rejects two-character name",
+    "priority": "P2",
+    "preconditions": "Add user dialog",
+    "steps": [
+      "Submit name Al with valid email and Manager"
+    ],
+    "expected": "Full-name error; name focused; dialog stays open",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-04",
+    "title": "Rejects whitespace name",
+    "priority": "P2",
+    "preconditions": "Add user dialog",
+    "steps": [
+      "Submit whitespace-only name with other fields valid"
+    ],
+    "expected": "Full-name error; name focused; dialog stays open",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-05",
+    "title": "Rejects trimmed short name",
+    "priority": "P2",
+    "preconditions": "Add user dialog",
+    "steps": [
+      "Submit space-A-space with other fields valid"
+    ],
+    "expected": "Trimmed one-character name rejected",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-06",
+    "title": "Rejects empty email",
+    "priority": "P2",
+    "preconditions": "Add user dialog",
+    "steps": [
+      "Submit Maya Chen and Manager with blank email"
+    ],
+    "expected": "Enter a valid work email; email focused; dialog open",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-07",
+    "title": "Rejects missing at sign",
+    "priority": "P2",
+    "preconditions": "Add user dialog",
+    "steps": [
+      "Submit maya.example.com with other fields valid"
+    ],
+    "expected": "Missing-at-sign email rejected; email focused; dialog open",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-08",
+    "title": "Rejects missing domain suffix",
+    "priority": "P2",
+    "preconditions": "Add user dialog",
+    "steps": [
+      "Submit maya@example with other fields valid"
+    ],
+    "expected": "Missing-domain-suffix email rejected; email focused; dialog open",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-09",
+    "title": "Rejects internal whitespace",
+    "priority": "P2",
+    "preconditions": "Add user dialog",
+    "steps": [
+      "Submit maya chen@example.com with other fields valid"
+    ],
+    "expected": "Internal-whitespace email rejected; email focused; dialog open",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-10",
+    "title": "Role is mandatory",
+    "priority": "P2",
+    "preconditions": "Add user dialog",
+    "steps": [
+      "Fill valid name/email",
+      "leave role unselected",
+      "submit"
+    ],
+    "expected": "Choose a role error; role control focused",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-11",
+    "title": "Rejects existing email",
+    "priority": "P2",
+    "preconditions": "Add user dialog, seeded Ava account",
+    "steps": [
+      "Submit ava@qaforge.dev with a valid new name/role"
+    ],
+    "expected": "Duplicate-email error; no additional row",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-12",
+    "title": "Rejects case and whitespace duplicate",
+    "priority": "P2",
+    "preconditions": "Add user dialog, seeded Ava account",
+    "steps": [
+      "Submit AVA@QAFORGE.DEV with surrounding spaces"
+    ],
+    "expected": "Case-insensitive trimmed duplicate rejected; no additional row",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-13",
+    "title": "Creates a Pending Admin with updated metrics",
+    "priority": "P1",
+    "preconditions": "Add user dialog",
+    "steps": [
+      "Create Maya Chen as Admin"
+    ],
+    "expected": "Creating user… disabled state; toast; Pending/Never row; total 7, pending 2, admins 3",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-14",
+    "title": "Creates a Pending Manager with updated metrics",
+    "priority": "P1",
+    "preconditions": "Add user dialog",
+    "steps": [
+      "Create Maya Chen as Manager with default welcome option"
+    ],
+    "expected": "Creating user… disabled state; toast; Pending/Never row; total 7, pending 2, admins 2",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-15",
+    "title": "Creates a Pending Viewer with updated metrics",
+    "priority": "P1",
+    "preconditions": "Add user dialog",
+    "steps": [
+      "Create Maya Chen as Viewer"
+    ],
+    "expected": "Creating user… disabled state; toast; Pending/Never row; total 7, pending 2, admins 2",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-16",
+    "title": "Accepts the three-character boundary and trims input",
+    "priority": "P2",
+    "preconditions": "Add user dialog",
+    "steps": [
+      "Submit space-Ana-space and padded ana@example.com"
+    ],
+    "expected": "Three-character boundary accepted; row name and email trimmed",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-17",
+    "title": "Correcting validation errors permits submission",
+    "priority": "P2",
+    "preconditions": "Add user dialog",
+    "steps": [
+      "Submit empty form",
+      "correct all values",
+      "submit"
+    ],
+    "expected": "Validation recovery succeeds; dialog closes; Maya row appears",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-18",
+    "title": "All timezones and account checkboxes can be selected",
+    "priority": "P2",
+    "preconditions": "Add user dialog",
+    "steps": [
+      "Select each timezone",
+      "uncheck welcome",
+      "check MFA",
+      "submit valid user"
+    ],
+    "expected": "Each control retains chosen UI state; user creation succeeds",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-19",
+    "title": "Cancel discards an unsaved user",
+    "priority": "P2",
+    "preconditions": "Add user dialog with valid unsaved data",
+    "steps": [
+      "Click Cancel"
+    ],
+    "expected": "Dialog closes; six rows remain; Maya absent",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-20",
+    "title": "Close discards an unsaved user",
+    "priority": "P2",
+    "preconditions": "Add user dialog with valid unsaved data",
+    "steps": [
+      "Click Close dialog"
+    ],
+    "expected": "Dialog closes; six rows remain; Maya absent",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-21",
+    "title": "Escape discards an unsaved user",
+    "priority": "P2",
+    "preconditions": "Add user dialog with valid unsaved data",
+    "steps": [
+      "Press Escape"
+    ],
+    "expected": "Native dialog closes; six rows remain; Maya absent",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-22",
+    "title": "Reopening clears errors and restores form defaults",
+    "priority": "P2",
+    "preconditions": "Add user dialog",
+    "steps": [
+      "Trigger validation",
+      "change checkboxes/timezone",
+      "cancel and reopen"
+    ],
+    "expected": "Errors and aria-invalid removed; default checkboxes/timezone restored",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-23",
+    "title": "Creating a user clears active user filters",
+    "priority": "P2",
+    "preconditions": "Authenticated with Viewer role and Mila search filters",
+    "steps": [
+      "Open Add user and create Manager Maya"
+    ],
+    "expected": "Dialog closes; search cleared; All roles selected; all seven rows visible",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-FORM-24",
+    "title": "User-supplied markup is displayed as text",
+    "priority": "P2",
+    "preconditions": "Add user dialog",
+    "steps": [
+      "Create a user whose name is an img/onerror markup string"
+    ],
+    "expected": "Literal name visible; no image element created; document title unchanged",
+    "file": "tests/user-form.spec.ts"
+  },
+  {
+    "id": "QF-BULK-01",
+    "title": "Invitation action starts disabled with no selection",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Inspect invitation button, count and select-all"
+    ],
+    "expected": "Invite disabled; count 0; select-all unchecked",
+    "file": "tests/bulk-actions.spec.ts"
+  },
+  {
+    "id": "QF-BULK-02",
+    "title": "Selecting and deselecting one user updates count and action",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Select Mila then deselect Mila"
+    ],
+    "expected": "Count 1/enabled/indeterminate then count 0/disabled/not indeterminate",
+    "file": "tests/bulk-actions.spec.ts"
+  },
+  {
+    "id": "QF-BULK-03",
+    "title": "Select all selects six rows and can clear them",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Check select-all",
+      "inspect all row checkboxes",
+      "uncheck select-all"
+    ],
+    "expected": "Six selected, then none; each checkbox matches",
+    "file": "tests/bulk-actions.spec.ts"
+  },
+  {
+    "id": "QF-BULK-04",
+    "title": "Select all applies only to visible filtered users",
+    "priority": "P2",
+    "preconditions": "Viewer filter active",
+    "steps": [
+      "Select all visible users",
+      "return to All roles"
+    ],
+    "expected": "Only Mila and Ethan selected; count 2; header checkbox indeterminate",
+    "file": "tests/bulk-actions.spec.ts"
+  },
+  {
+    "id": "QF-BULK-05",
+    "title": "Selection persists when a selected row is filtered out",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Select Sofia",
+      "hide her with Viewer filter",
+      "restore All roles"
+    ],
+    "expected": "Count remains 1; Sofia remains selected when visible again",
+    "file": "tests/bulk-actions.spec.ts"
+  },
+  {
+    "id": "QF-BULK-06",
+    "title": "Clearing visible selections preserves a hidden selection",
+    "priority": "P2",
+    "preconditions": "Ava selected before applying Viewer filter",
+    "steps": [
+      "Select all visible Viewers",
+      "unselect all visible",
+      "return to All roles"
+    ],
+    "expected": "Count 3 then 1; hidden Ava selection preserved",
+    "file": "tests/bulk-actions.spec.ts"
+  },
+  {
+    "id": "QF-BULK-07",
+    "title": "Two invitations show Sending then clear selection",
+    "priority": "P1",
+    "preconditions": "Mila and Sofia selected",
+    "steps": [
+      "Click Invite selected 2",
+      "observe async completion"
+    ],
+    "expected": "Sending… 2 disabled; two-user toast; all selections cleared; button disabled at 0; statuses unchanged",
+    "file": "tests/bulk-actions.spec.ts"
+  },
+  {
+    "id": "QF-BULK-08",
+    "title": "All-user invitation reports the selected count",
+    "priority": "P2",
+    "preconditions": "All six users selected",
+    "steps": [
+      "Send invitations"
+    ],
+    "expected": "Six-user notification; selection count resets to 0; header unchecked",
+    "file": "tests/bulk-actions.spec.ts"
+  },
+  {
+    "id": "QF-BULK-09",
+    "title": "Invitations can be sent again after a completed batch",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Send one invitation",
+      "select two new users after completion",
+      "send again"
+    ],
+    "expected": "Correct one-user then two-user notifications; action resets after both batches",
+    "file": "tests/bulk-actions.spec.ts"
+  },
+  {
+    "id": "QF-BULK-10",
+    "title": "Empty results cannot add users to a selection",
+    "priority": "P2",
+    "preconditions": "Search has zero results",
+    "steps": [
+      "Click select-all"
+    ],
+    "expected": "Selection count stays 0; Invite remains disabled",
+    "file": "tests/bulk-actions.spec.ts"
+  },
+  {
+    "id": "QF-STATUS-01",
+    "title": "Suspended becomes Active with async feedback and metrics",
+    "priority": "P1",
+    "preconditions": "Sofia Suspended, active metric 4",
+    "steps": [
+      "Click Sofia's status",
+      "observe Updating",
+      "await completion"
+    ],
+    "expected": "Updating… disabled; Active status and toast; active 5, pending 1, total 6",
+    "file": "tests/status.spec.ts"
+  },
+  {
+    "id": "QF-STATUS-02",
+    "title": "Active becomes Suspended with async feedback and metrics",
+    "priority": "P1",
+    "preconditions": "Ava Active, active metric 4",
+    "steps": [
+      "Click Ava's status",
+      "observe Updating",
+      "await completion"
+    ],
+    "expected": "Updating… disabled; Suspended status and toast; active 3, pending 1, total 6",
+    "file": "tests/status.spec.ts"
+  },
+  {
+    "id": "QF-STATUS-03",
+    "title": "Pending becomes Active with async feedback and metrics",
+    "priority": "P1",
+    "preconditions": "Mila Pending, pending metric 1",
+    "steps": [
+      "Click Mila's status",
+      "observe Updating",
+      "await completion"
+    ],
+    "expected": "Updating… disabled; Active status and toast; active 5, pending 0, total 6",
+    "file": "tests/status.spec.ts"
+  },
+  {
+    "id": "QF-STATUS-04",
+    "title": "Status changes affect only the chosen user",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Activate Sofia",
+      "inspect Mila and Ava"
+    ],
+    "expected": "Only Sofia changes; Mila Pending and Ava Active remain",
+    "file": "tests/status.spec.ts"
+  },
+  {
+    "id": "QF-STATUS-05",
+    "title": "Status changes can be reversed",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Activate Sofia",
+      "suspend Sofia after completion"
+    ],
+    "expected": "Final Suspended state; active metric restored to 4",
+    "file": "tests/status.spec.ts"
+  },
+  {
+    "id": "QF-STATUS-06",
+    "title": "Mutation preserves active filters and selection",
+    "priority": "P2",
+    "preconditions": "Manager filter, Sofia search, Sofia selected",
+    "steps": [
+      "Activate Sofia"
+    ],
+    "expected": "Filter values, one visible row and selected checkbox preserved",
+    "file": "tests/status.spec.ts"
+  },
+  {
+    "id": "QF-AUDIT-01",
+    "title": "Audit initially shows the first four events in order",
+    "priority": "P1",
+    "preconditions": "Authenticated, Audit opened",
+    "steps": [
+      "Inspect initial events and controls"
+    ],
+    "expected": "First four seed events in exact order; Ready; Load more visible",
+    "file": "tests/audit.spec.ts"
+  },
+  {
+    "id": "QF-AUDIT-02",
+    "title": "Load more shows a disabled loading state then all eight events",
+    "priority": "P2",
+    "preconditions": "Audit initial four events",
+    "steps": [
+      "Click Load more"
+    ],
+    "expected": "Loading… disabled; eight ordered events; Load more hidden",
+    "file": "tests/audit.spec.ts"
+  },
+  {
+    "id": "QF-AUDIT-03",
+    "title": "Debounced role search exposes Filtering then Ready",
+    "priority": "P1",
+    "preconditions": "Audit initial four events",
+    "steps": [
+      "Search role"
+    ],
+    "expected": "Filtering… then Ready; only role-change event; Load more hidden",
+    "file": "tests/audit.spec.ts"
+  },
+  {
+    "id": "QF-AUDIT-04",
+    "title": "Search is case-insensitive and trims whitespace",
+    "priority": "P2",
+    "preconditions": "Audit initial four events",
+    "steps": [
+      "Search padded uppercase ROLE"
+    ],
+    "expected": "Only role-change event; Ready",
+    "file": "tests/audit.spec.ts"
+  },
+  {
+    "id": "QF-AUDIT-05",
+    "title": "No-match state recovers when the search is cleared",
+    "priority": "P2",
+    "preconditions": "Audit initial four events",
+    "steps": [
+      "Search nonexistent",
+      "clear search"
+    ],
+    "expected": "No matching events and zero articles; clear restores first four and Load more",
+    "file": "tests/audit.spec.ts"
+  },
+  {
+    "id": "QF-AUDIT-06",
+    "title": "Rapid input cancels stale debounce work",
+    "priority": "P2",
+    "preconditions": "Audit with Playwright virtual clock",
+    "steps": [
+      "Type role",
+      "advance 100 ms",
+      "replace with MFA",
+      "advance 299 then 1 ms"
+    ],
+    "expected": "Prior results and Filtering at 299 ms; only MFA event and Ready at 300 ms",
+    "file": "tests/audit.spec.ts"
+  },
+  {
+    "id": "QF-AUDIT-07",
+    "title": "Search covers events that have not yet been loaded",
+    "priority": "P2",
+    "preconditions": "Audit first page only",
+    "steps": [
+      "Search archived"
+    ],
+    "expected": "Eighth seed event is returned although not previously loaded",
+    "file": "tests/audit.spec.ts"
+  },
+  {
+    "id": "QF-AUDIT-08",
+    "title": "Clearing a filter preserves the expanded event limit",
+    "priority": "P2",
+    "preconditions": "Audit expanded to eight events",
+    "steps": [
+      "Filter role",
+      "clear filter"
+    ],
+    "expected": "One filtered row then eight restored; no Load more",
+    "file": "tests/audit.spec.ts"
+  },
+  {
+    "id": "QF-AUDIT-09",
+    "title": "Export CSV produces the documented simulation notification",
+    "priority": "P2",
+    "preconditions": "Audit screen",
+    "steps": [
+      "Click Export CSV"
+    ],
+    "expected": "Documented export-prepared notification; four original rows remain; real download is outside demo contract",
+    "file": "tests/audit.spec.ts"
+  },
+  {
+    "id": "QF-AUDIT-10",
+    "title": "Whitespace-only event search leaves results unfiltered",
+    "priority": "P2",
+    "preconditions": "Audit initial four events",
+    "steps": [
+      "Search whitespace only"
+    ],
+    "expected": "Ready; four initial events; Load more remains visible",
+    "file": "tests/audit.spec.ts"
+  },
+  {
+    "id": "QF-NAV-01",
+    "title": "Main navigation updates heading breadcrumb and URL hash",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Navigate Audit, Challenges, Users"
+    ],
+    "expected": "Each heading, breadcrumb and hash match; sections switch correctly",
+    "file": "tests/navigation.spec.ts"
+  },
+  {
+    "id": "QF-NAV-02",
+    "title": "Keyboard shortcuts switch Users and Audit",
+    "priority": "P2",
+    "preconditions": "Authenticated, focus outside form fields",
+    "steps": [
+      "Press 2 then 1"
+    ],
+    "expected": "Audit then Users displayed",
+    "file": "tests/navigation.spec.ts"
+  },
+  {
+    "id": "QF-NAV-03",
+    "title": "Typing shortcut digits in search does not navigate",
+    "priority": "P2",
+    "preconditions": "Authenticated, user search focused",
+    "steps": [
+      "Type keyboard shortcut digit 2"
+    ],
+    "expected": "Search receives digit; Users and #users retained",
+    "file": "tests/navigation.spec.ts"
+  },
+  {
+    "id": "QF-NAV-04",
+    "title": "Reset restores users metrics filters and bulk selection",
+    "priority": "P1",
+    "preconditions": "Create Maya, activate Sofia, select Mila, apply filters",
+    "steps": [
+      "Click Reset lab data"
+    ],
+    "expected": "Six seeds; active 4/pending 1; Sofia Suspended; Maya removed; filters and selection cleared; reset toast",
+    "file": "tests/navigation.spec.ts"
+  },
+  {
+    "id": "QF-NAV-05",
+    "title": "Reset is idempotent",
+    "priority": "P2",
+    "preconditions": "Authenticated baseline",
+    "steps": [
+      "Click Reset lab data twice"
+    ],
+    "expected": "Six seed rows and baseline summary remain",
+    "file": "tests/navigation.spec.ts"
+  },
+  {
+    "id": "QF-NAV-06",
+    "title": "Toast is transient and disappears after its lifetime",
+    "priority": "P2",
+    "preconditions": "Authenticated with virtual clock installed",
+    "steps": [
+      "Trigger Edit toast",
+      "advance 3200 ms"
+    ],
+    "expected": "Toast first visible then removed",
+    "file": "tests/navigation.spec.ts"
+  },
+  {
+    "id": "QF-NAV-07",
+    "title": "Form fields support forward and reverse keyboard navigation",
+    "priority": "P2",
+    "preconditions": "Add user dialog open",
+    "steps": [
+      "Focus name",
+      "Tab to email",
+      "Tab to role",
+      "Shift+Tab to email"
+    ],
+    "expected": "Form fields follow logical forward and reverse keyboard order",
+    "file": "tests/navigation.spec.ts"
+  },
+  {
+    "id": "QF-NAV-08",
+    "title": "Fresh browser reload restores disposable demo data",
+    "priority": "P2",
+    "preconditions": "Create a disposable seventh user; remember option off",
+    "steps": [
+      "Reload page",
+      "sign in"
+    ],
+    "expected": "Fresh six-user demo baseline; new user absent",
+    "file": "tests/navigation.spec.ts"
+  },
+  {
+    "id": "QF-NAV-09",
+    "title": "Mobile viewport supports login navigation table and dialog",
+    "priority": "P2",
+    "preconditions": "Authenticated, viewport changed to 390x844",
+    "steps": [
+      "Sign out/in",
+      "create user",
+      "navigate Audit"
+    ],
+    "expected": "Login, user row, modal controls and Audit heading operable at narrow width",
+    "file": "tests/navigation.spec.ts"
+  },
+  {
+    "id": "QF-CHALLENGE-01",
+    "title": "Nine exercise cards are grouped into three difficulty levels",
+    "priority": "P1",
+    "preconditions": "Challenges screen",
+    "steps": [
+      "Inspect levels and card headings"
+    ],
+    "expected": "Nine ordered exercise titles; three levels with three cards each",
+    "file": "tests/challenges.spec.ts"
+  },
+  {
+    "id": "QF-CHALLENGE-02",
+    "title": "Every exercise has a brief expected outcome and completion control",
+    "priority": "P2",
+    "preconditions": "Challenges screen",
+    "steps": [
+      "Inspect every brief, expected outcome and completion checkbox"
+    ],
+    "expected": "Briefs nonempty; expected outcomes present; all completion checkboxes unchecked",
+    "file": "tests/challenges.spec.ts"
+  },
+  {
+    "id": "QF-CHALLENGE-03",
+    "title": "Each exercise can independently be marked complete and undone",
+    "priority": "P2",
+    "preconditions": "Challenges screen",
+    "steps": [
+      "Check and uncheck each of nine completion controls"
+    ],
+    "expected": "Each corresponding card gains and loses done state",
+    "file": "tests/challenges.spec.ts"
+  },
+  {
+    "id": "QF-CHALLENGE-04",
+    "title": "Completion persists when switching views",
+    "priority": "P2",
+    "preconditions": "Challenges screen",
+    "steps": [
+      "Complete exercise 04",
+      "visit Users",
+      "return"
+    ],
+    "expected": "04 remains checked; 05 remains unchecked",
+    "file": "tests/challenges.spec.ts"
+  },
+  {
+    "id": "QF-CHALLENGE-05",
+    "title": "Solutions stay hidden until the separate guide is opened",
+    "priority": "P2",
+    "preconditions": "Challenges screen",
+    "steps": [
+      "Verify hidden guide",
+      "open solution guide"
+    ],
+    "expected": "Separate guide visible; challenge heading hidden; #solutions/breadcrumb correct; nine panels",
+    "file": "tests/challenges.spec.ts"
+  },
+  {
+    "id": "QF-CHALLENGE-06",
+    "title": "All nine solution panels can expand and collapse",
+    "priority": "P2",
+    "preconditions": "Solution guide",
+    "steps": [
+      "Expand and collapse each of nine panels"
+    ],
+    "expected": "Code initially hidden; nonempty Playwright code shown on expansion; hidden on collapse",
+    "file": "tests/challenges.spec.ts"
+  },
+  {
+    "id": "QF-CHALLENGE-07",
+    "title": "Back from solutions restores the challenge screen",
+    "priority": "P2",
+    "preconditions": "Solution guide",
+    "steps": [
+      "Click Back to challenges"
+    ],
+    "expected": "Challenges visible; guide hidden; #challenges URL",
+    "file": "tests/challenges.spec.ts"
+  },
+  {
+    "id": "QF-DEFECT-01",
+    "title": "Retained audit search must still filter after navigation",
+    "priority": "P2",
+    "preconditions": "Audit filtered to role",
+    "steps": [
+      "Navigate Users then Audit"
+    ],
+    "expected": "Retained role search must still show only the role event; current deployment fails",
+    "file": "tests/defects.spec.ts"
+  },
+  {
+    "id": "QF-DEFECT-02",
+    "title": "Exercise 02 validation assertions must locate visible errors uniquely",
+    "priority": "P2",
+    "preconditions": "Published exercise 02 guide",
+    "steps": [
+      "Read the validation assertions",
+      "submit blank Add user form"
+    ],
+    "expected": "Name and role locators must be unique and visible; email assertion must match the real error; current deployment fails all three",
+    "file": "tests/defects.spec.ts"
+  },
+  {
+    "id": "QF-DEFECT-03",
+    "title": "Exercise 07 Updating assertion must uniquely locate the status control",
+    "priority": "P2",
+    "preconditions": "Published exercise 07 guide; frozen timer during status update",
+    "steps": [
+      "Use the guide's Updating locator against Sofia's row"
+    ],
+    "expected": "Locator must match one Updating control; current guide also matches Edit and Delete",
+    "file": "tests/defects.spec.ts"
+  },
+  {
+    "id": "QF-GUIDE-01",
+    "title": "Exercise 07 Active metric locator resolves the expected value",
+    "priority": "P2",
+    "preconditions": "Published exercise 07 guide; Sofia activated",
+    "steps": [
+      "Use the guide's Active metric locator"
+    ],
+    "expected": "Locator resolves one element containing 5; investigated and confirmed working",
+    "file": "tests/guide.spec.ts"
+  },
+  {
+    "id": "QF-DEFECT-05",
+    "title": "Keep this lab session must retain demo sign-in on reload",
+    "priority": "P2",
+    "preconditions": "Login with Keep this lab session checked",
+    "steps": [
+      "Sign in successfully then reload"
+    ],
+    "expected": "Demo sign-in should be retained; current deployment fails; acceptance based on the checkbox label",
+    "file": "tests/defects.spec.ts"
+  },
+  {
+    "id": "QF-DEFECT-06",
+    "title": "Exercise 08 Ready assertion must exclude unrelated hidden content",
+    "priority": "P2",
+    "preconditions": "Published exercise 08 guide and Audit filtered to role",
+    "steps": [
+      "Wait for Ready",
+      "evaluate the guide's Ready locator"
+    ],
+    "expected": "Locator must uniquely target the visible audit state rather than hidden metric, challenge and code text",
+    "file": "tests/defects.spec.ts"
+  }
+]
