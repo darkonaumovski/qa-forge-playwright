@@ -2,9 +2,9 @@
 
 ## Objective and release gate
 
-Validate the deployed private Playwright Practice Lab at https://qa-forge-playwright-lab.darkonaumovski.chatgpt.site/. Cover authentication, the complete exposed user workflow, locator exercises, asynchronous behavior, navigation, audit browsing, challenges and solution content. This plan is based on the deployed version 2 UI and JavaScript inspected on 12 September 2026, not an assumed conventional SaaS backend.
+Validate the deployed private Playwright Practice Lab at https://qa-forge-playwright-lab.darkonaumovski.chatgpt.site/. Cover authentication, the complete exposed user workflow, locator exercises, asynchronous behavior, navigation, audit browsing, challenges and solution content. This plan is based on the deployed version 3 UI and JavaScript validated on 12 September 2026, not an assumed conventional SaaS backend.
 
-The regression gate requires all default tests to pass in all three browsers, type checking and plan coverage to pass, no skipped or expected-failing tests, and no unresolved application issues. A smoke pass alone does not satisfy this gate. Defect tests run normally and deliberately keep the gate red until the application is repaired. Never change assertions merely to accept a known defect. The owner subsequently authorized publishing this repository with the known failures; publication does not imply a green regression gate.
+The regression gate requires all default tests to pass in all three browsers, type checking and plan coverage to pass, no skipped or expected-failing tests, and no unresolved application issues. A smoke pass alone does not satisfy this gate. Regression tests for previously observed defects run normally and protect the repaired behavior.
 
 ## Scope and explicit demo boundaries
 
@@ -57,6 +57,6 @@ Classify failures as application defects, harness mistakes or environment failur
 
 ## Acceptance assumptions and risk
 
-The label “Keep this lab session” implies that a checked option preserves demo sign-in across a reload; QF-DEFECT-05 tests that interpretation. If the intended requirement is purely checkbox practice, the label should say so and the requirement should be reviewed explicitly. The audit search's displayed value must agree with the visible events after navigation. Solution snippets are part of the learning product and must use selectors that resolve the demonstrated elements.
+The label “Keep this lab session” means that a checked option preserves demo sign-in across a reload; QF-DEFECT-05 verifies that behavior. The audit search's displayed value must agree with the visible events after navigation. Solution snippets are part of the learning product and must use selectors that resolve the demonstrated elements.
 
 The live site can change independently of this repository. Rerun the full default suite after a new deployment or credential change. Passing the defined plan establishes coverage of these 106 observable scenarios; it is not a claim to prove absence of every possible defect.

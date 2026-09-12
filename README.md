@@ -2,7 +2,7 @@
 
 TypeScript end-to-end tests for the private [QA Forge practice lab](https://qa-forge-playwright-lab.darkonaumovski.chatgpt.site/), using page objects, isolated fixtures and Allure reporting.
 
-**106 scenarios across Chromium, Firefox and WebKit: 318 test executions.** The default suite includes regression tests for application defects; see [known issues](docs/known-issues.md) and the [validation record](docs/validation.md). The owner authorized publication with these known failures; the regression gate remains red. Tests are never marked as expected failures to make the build green.
+**106 scenarios across Chromium, Firefox and WebKit: 318 test executions.** The default suite includes regression tests for the application issues found during the initial run; see [resolved issues](docs/known-issues.md) and the [validation record](docs/validation.md). The complete release gate passes with no failures, skips, retries, or expected failures.
 
 ## Start locally
 
@@ -81,7 +81,7 @@ The workflow runs on pull requests, pushes to `main`, and manual dispatch. Confi
 
 CI installs the pinned dependency set and matching browsers, checks TypeScript and scenario coverage, runs all tests and generates Allure even when tests fail. Report upload is contingent on the artifact credential scan passing. Reports remain workflow artifacts for 14 days; nothing is published to GitHub Pages.
 
-The owner subsequently authorized GitHub publication with the documented failures still present. Publication does not change the regression gate: the default suite remains red until the application issues are fixed. Configure GitHub authentication locally when needed; do not paste an access token into source or a remote URL.
+The repaired live lab and this automation repository were validated together before release. Configure GitHub authentication locally when needed; do not paste an access token into source or a remote URL.
 
 ## References
 
