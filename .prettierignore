@@ -1,0 +1,7 @@
+allure-report/
+allure-results/
+blob-report/
+docs/
+node_modules/
+playwright-report/
+test-results/

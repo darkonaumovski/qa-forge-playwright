@@ -1,0 +1,22 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "perf": "warn"
+  },
+  "ignorePatterns": [
+    "allure-report/**",
+    "allure-results/**",
+    "blob-report/**",
+    "node_modules/**",
+    "playwright-report/**",
+    "test-results/**"
+  ],
+  "rules": {
+    "no-await-in-loop": "off",
+    "no-console": "off",
+    "no-control-regex": "off",
+    "no-empty-pattern": "off"
+  }
+}

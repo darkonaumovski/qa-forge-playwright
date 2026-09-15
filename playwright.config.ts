@@ -5,8 +5,9 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
+  // A retry-free release gate keeps intermittent failures visible instead of laundering them as passes.
   retries: 0,
-  workers: Number(process.env.PW_WORKERS ?? 3),
+  workers: environment.workers,
   timeout: 30_000,
   expect: { timeout: 7_000 },
   outputDir: 'test-results',
@@ -15,11 +16,14 @@ export default defineConfig({
     ['html', { open: 'never', outputFolder: 'playwright-report' }],
     ['json', { outputFile: 'test-results/results.json' }],
     ['junit', { outputFile: 'test-results/junit.xml' }],
-    ['allure-playwright', {
-      resultsDir: 'allure-results',
-      detail: false,
-      environmentInfo: { application: 'QA Forge', base_url: environment.baseURL, node: process.version },
-    }],
+    [
+      'allure-playwright',
+      {
+        resultsDir: 'allure-results',
+        detail: false,
+        environmentInfo: { application: 'QA Forge', base_url: environment.baseURL, node: process.version },
+      },
+    ],
   ],
   use: {
     baseURL: environment.baseURL,

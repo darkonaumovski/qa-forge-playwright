@@ -11,10 +11,15 @@ export class LoginPage {
   readonly alert = this.form.getByRole('alert');
   readonly emailError = this.page.locator('#email-error');
   readonly passwordError = this.page.locator('#password-error');
-  async open() { await this.page.goto('/', { waitUntil: 'domcontentloaded' }); }
+  async open() {
+    await this.page.goto('/', { waitUntil: 'domcontentloaded' });
+  }
   async fill(email = environment.email, password = environment.password) {
     await this.email.fill(email);
     await this.password.fill(password);
   }
-  async signIn() { await this.fill(); await this.submit.click(); }
+  async signIn() {
+    await this.fill();
+    await this.submit.click();
+  }
 }

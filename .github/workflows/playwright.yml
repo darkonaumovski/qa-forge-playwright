@@ -43,8 +43,8 @@ jobs:
           fi
       - run: npm ci
       - run: npx playwright install --with-deps chromium firefox webkit
-      - run: npm run typecheck
-      - run: npm run coverage:check
+      - name: Run static quality gates
+        run: npm run verify:static
       - name: Run every scenario on all browsers
         run: npm test
       - name: Generate Allure report even on test failures

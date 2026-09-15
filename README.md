@@ -15,10 +15,12 @@ npx playwright install chromium firefox webkit
 
 Copy `.env.example` to `.env`. The demo credentials are already filled in. Set `SITE_BYPASS_TOKEN` to the existing token authorized by the site owner. Alternatively set `SITE_STORAGE_STATE` to a local Playwright storage-state file containing only the outer Sites login. These are separate from the lab's demo sign-in, which every authenticated test performs through the UI.
 
-The working copy supplied to the owner has an ignored local `.env` configured for this run. The token must stay local or in a GitHub Actions secret; it is not in the repository or distribution archive. If the private access gate returns 401, refresh authorized access rather than making the site public.
+The token must stay in an ignored local `.env` or a GitHub Actions secret; it is not in the repository. If the private access gate returns 401, refresh authorized access rather than making the site public.
 
 ```sh
 npm run typecheck
+npm run lint
+npm run format:check
 npm run coverage:check
 npm test
 npm run allure:generate
@@ -38,6 +40,10 @@ Generate reports after a failing run too. `npm test` correctly exits nonzero whi
 | `npm run test:ui` | Interactive Playwright runner |
 | `npx playwright test --grep QF-FORM-14 --project=chromium` | Investigate one scenario; does not clean old reports |
 | `npm run typecheck` | Strict TypeScript validation |
+| `npm run lint` | Reject correctness, suspicious-code and performance lint findings |
+| `npm run format` | Format TypeScript, scripts and configuration files |
+| `npm run format:check` | Verify formatting without modifying files |
+| `npm run verify:static` | Run lint, formatting, types, plan coverage and secret checks |
 | `npm run coverage:check` | Enforce one-to-one plan/test IDs and all browser projects |
 | `npm run plan:generate` | Regenerate the detailed plan from the scenario catalog |
 | `npm run results:summary` | Write compact JSON counts from the last full result |
@@ -57,6 +63,7 @@ docs/
   validation.md                 Actual run and publication decision
 scripts/                        Coverage, report cleanup and safety checks
 src/
+  api/site-access.client.ts     Typed direct-HTTP client for the hosting boundary
   config/environment.ts         Environment-only private access
   data/users.ts                 Typed fixtures and expected seed data
   fixtures/test.ts              POM fixtures, login, access, error guard, Allure
@@ -79,7 +86,7 @@ Edit, delete and export intentionally produce notifications only in this lab. Ti
 
 The workflow runs on pull requests, pushes to `main`, and manual dispatch. Configure the private `SITE_BYPASS_TOKEN` repository secret before enabling it. Optional secrets: `LAB_EMAIL`, `LAB_PASSWORD`; optional variable: `BASE_URL`. Fork pull requests do not receive secrets and cannot run against the owner-only endpoint.
 
-CI installs the pinned dependency set and matching browsers, checks TypeScript and scenario coverage, runs all tests and generates Allure even when tests fail. Report upload is contingent on the artifact credential scan passing. Reports remain workflow artifacts for 14 days; nothing is published to GitHub Pages.
+CI installs the pinned dependency set and matching browsers, runs the static quality gate, runs all tests and generates Allure even when tests fail. Report upload is contingent on the artifact credential scan passing. Reports remain workflow artifacts for 14 days; nothing is published to GitHub Pages.
 
 The repaired live lab and this automation repository were validated together before release. Configure GitHub authentication locally when needed; do not paste an access token into source or a remote URL.
 

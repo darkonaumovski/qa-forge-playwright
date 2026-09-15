@@ -23,7 +23,14 @@ export class UserDialog {
     if (user.welcome !== undefined) await this.welcome.setChecked(user.welcome);
     if (user.mfa !== undefined) await this.mfa.setChecked(user.mfa);
   }
-  async create(user: NewUser) { await this.fill(user); await this.save.click(); }
-  async cancel() { await this.dialog.getByRole('button', { name: 'Cancel', exact: true }).click(); }
-  async close() { await this.dialog.getByRole('button', { name: 'Close dialog' }).click(); }
+  async create(user: NewUser) {
+    await this.fill(user);
+    await this.save.click();
+  }
+  async cancel() {
+    await this.dialog.getByRole('button', { name: 'Cancel', exact: true }).click();
+  }
+  async close() {
+    await this.dialog.getByRole('button', { name: 'Close dialog' }).click();
+  }
 }

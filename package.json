@@ -12,6 +12,9 @@
     "test:smoke": "playwright test --grep @smoke",
     "test:headed": "playwright test --project=chromium --headed",
     "test:ui": "playwright test --ui",
+    "lint": "oxlint --deny-warnings --report-unused-disable-directives .",
+    "format": "prettier --write \"{src,tests,scripts}/**/*.{ts,mjs,json}\" \"*.{ts,json}\" \".github/**/*.yml\"",
+    "format:check": "prettier --check \"{src,tests,scripts}/**/*.{ts,mjs,json}\" \"*.{ts,json}\" \".github/**/*.yml\"",
     "typecheck": "tsc --noEmit",
     "report": "playwright show-report",
     "allure:generate": "node scripts/generate-allure.mjs",
@@ -24,7 +27,8 @@
     "results:summary": "node scripts/summarize-results.mjs",
     "results:gate": "node scripts/summarize-results.mjs --gate",
     "security:scan": "node scripts/scan-secrets.mjs",
-    "verify": "npm run typecheck && npm run coverage:check && npm test"
+    "verify:static": "npm run lint && npm run format:check && npm run typecheck && npm run coverage:check && npm run security:scan",
+    "verify": "npm run verify:static && npm test"
   },
   "devDependencies": {
     "@playwright/test": "1.62.1",
@@ -33,6 +37,8 @@
     "allure-js-commons": "3.12.1",
     "allure-playwright": "3.12.1",
     "dotenv": "17.4.2",
+    "oxlint": "1.83.0",
+    "prettier": "3.9.6",
     "typescript": "7.0.2"
   }
 }
